@@ -1,0 +1,63 @@
+﻿
+
+.mainLabel {
+    font-size: x-large;
+    font-weight: bold;
+    width: 50%;
+    margin: auto;
+    text-align:center;
+}
+
+.leftSpace {
+    margin-left: 120px;
+}
+
+.valError {
+    color: red;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.mainLeft {
+    font-size: x-large;
+    font-weight: bold;
+    margin: auto;
+    text-align: center;
+}
+h1 {
+    content: "Grade Point Calculator";
+    margin-bottom: 20px;
+    background: rgba(204, 255, 204, .8);
+    opacity: .80;
+    text-align: center;
+    border-radius: 10px;
+}
+.centerStuff {
+    width: 50%;
+    margin: auto;
+    background: rgba(204, 255, 204, .8);
+    text-align: center;
+}
+.centerTxtBox {
+    width:100px;
+    margin:auto;
+    text-align:center;
+}
+
+.auto-style1 {
+    width: 500px;
+}
+
+.container {
+    text-align: center;
+    background: rgba(204, 255, 204, .8);
+    border-radius: 10px;
+}
+body {
+    background-image: url('images/schoolbackgroundForLater.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
