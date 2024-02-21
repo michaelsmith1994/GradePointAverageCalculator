@@ -69,6 +69,7 @@
   <ItemGroup>
     <Content Include="Grade.aspx" />
     <Content Include="images\schoolbackgroundForLater.jpg" />
+    <Content Include="jsFunctions.js" />
     <Content Include="myStyle.css" />
     <Content Include="Web.config" />
     <Content Include="Scores.aspx" />

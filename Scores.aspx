@@ -1,132 +1,105 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Scores.aspx.cs" Inherits="WebApplication1.WebForm1" %>
-
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
     <link href="MyStyle.css" rel="stylesheet" />
+    <script src="jsFunctions.js"></script>
 </head>  
-
+    
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" onsubmit="validateDynamicFields()">
         <h1 style="background-color: #CCFFCC">Grade Point Calculator</h1>
         <div class="container">
-            
-            <asp:Label ID="lblquiz" runat="server" Font-Bold="True" Text="Pop Quiz Grade (5) " CssClass="mainLabel"></asp:Label>
+            <!-- Quiz labels -->
+            <asp:HiddenField ID="hiddenquizcounter" runat="server" Value="0" />
+            <asp:Label ID="lblquiz" runat="server" Font-Bold="True" Text="Quiz Grades " CssClass="mainLabel"></asp:Label>
             <asp:TextBox ID="txtboxQuizPercent" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            
             <asp:Label ID="lblquiz0" runat="server" Font-Bold="True" Text="% of Total Grade" CssClass="mainLabel"></asp:Label>
-            <asp:RangeValidator ID="RangeValidator5" runat="server" ControlToValidate="txtboxQuizPercent" CssClass="valError" Display="Dynamic" ErrorMessage="RangeValidator" MaximumValue="125" MinimumValue="0" Type="Integer">Use Int representation for the percentage, do not include &quot;%&quot; symbol.</asp:RangeValidator>
+            <!--dynamically added fields -->
             <br />
             <br />
-            <asp:TextBox ID="txtboxQuiz1" runat="server" CssClass="centerTxtBox"></asp:TextBox>
+            <button type="button" onclick="addAdditionalField('txtboxQuiz')">Add Additional Quiz</button>
+            <button type="button" onclick="removeLastField('txtboxQuiz')">Remove Last Quiz</button>
             <br />
-            <asp:RangeValidator ID="quizValidator1" runat="server" ControlToValidate="txtboxQuiz1" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtboxQuiz1" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
+            <asp:Label ID="quizListTitle" runat="server" Text="Quiz List" Font-Bold="True" CssClass="mainLabel"></asp:Label>
+            <ul class="modern-list">
+                <li><div id="quizFieldsContainer"></div></li>
+            </ul>
             <br />
-            <br />
-            <asp:TextBox ID="txtboxQuiz2" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            <br />
-            <asp:RangeValidator ID="quizValidator2" runat="server" ControlToValidate="txtboxQuiz2" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" ControlToValidate="txtboxQuiz2" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
-            <br />
-            <br />
-            <asp:TextBox ID="txtboxQuiz3" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            <br />
-            <asp:RangeValidator ID="quizValidator3" runat="server" ControlToValidate="txtboxQuiz3" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="txtboxQuiz3" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
-            <br />
-            <br />
-            <asp:TextBox ID="txtboxQuiz4" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            <br />
-            <asp:RangeValidator ID="quizValidator4" runat="server" ControlToValidate="txtboxQuiz4" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="txtboxQuiz4" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
-            <br />
-            <br />
-            <asp:TextBox ID="txtboxQuiz5" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            <br />
-            <asp:RangeValidator ID="quizValidator5" runat="server" ControlToValidate="txtboxQuiz5" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="txtboxQuiz5" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
-            <br />
-            <br />
-            <asp:Label ID="lblAssign" runat="server" Font-Bold="True" Text="Assigments Grade (4) " CssClass="mainLabel"></asp:Label>
+            <!-- Assignment labels -->
+            <asp:HiddenField ID="hiddenassigncounter" runat="server" Value="0" />
+            <asp:Label ID="lblAssign" runat="server" Font-Bold="True" Text="Assigment Grades " CssClass="mainLabel"></asp:Label>
             <asp:TextBox ID="txtboxAssPercent" runat="server" CssClass="centerTxtBox"></asp:TextBox>
             <asp:Label ID="lblAssign0" runat="server" Font-Bold="True" Text="% of Total Grade" CssClass="mainLabel"></asp:Label>
-            <asp:RangeValidator ID="RangeValidator4" runat="server" ControlToValidate="txtboxAssPercent" CssClass="valError" Display="Dynamic" ErrorMessage="RangeValidator" MaximumValue="125" MinimumValue="0" Type="Integer">Use Int representation for the percentage, do not include &quot;%&quot; symbol.</asp:RangeValidator>
+            <!--dynamically added fields -->            
             <br />
             <br />
-            <asp:TextBox ID="txtboxAss1" runat="server" CssClass="centerTxtBox"></asp:TextBox>
+            <button type="button" onclick="addAdditionalField('txtboxAss')">Add Additional Assignment</button>
+            <button type="button" onclick="removeLastField('txtboxAss')">Remove Last Assignment</button>
             <br />
-            <asp:RangeValidator ID="assValidator1" runat="server" ControlToValidate="txtboxAss1" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtboxAss1" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
+            <asp:Label ID="assignListTitle" runat="server" Text="Assignment List" Font-Bold="True" CssClass="mainLabel"></asp:Label>
+            <ul class="modern-list">
+                <li><div id="assignmentFieldsContainer"></div></li>
+            </ul>
             <br />
-            <br />
-            <asp:TextBox ID="txtboxAss2" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            <br />
-            <asp:RangeValidator ID="assValidator2" runat="server" ControlToValidate="txtboxAss2" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtboxAss2" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
-            <br />
-            <br />
-            <asp:TextBox ID="txtboxAss3" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            <br />
-            <asp:RangeValidator ID="assValidator3" runat="server" ControlToValidate="txtboxAss3" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtboxAss3" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
-            <br />
-            <br />
-            <asp:TextBox ID="txtboxAss4" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            <br />
-            <asp:RangeValidator ID="assValidator4" runat="server" ControlToValidate="txtboxAss4" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtboxAss4" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
-            <br />
-            <br />
-            <asp:Label ID="lblCodeTest" runat="server" Text="Code Test Grade (2) " Font-Bold="True" CssClass="mainLabel"></asp:Label>
+            <!-- Test labels -->
+            <asp:HiddenField ID="hiddentestcounter" runat="server" Value="0" />
+            <asp:Label ID="Label1" runat="server" Text="Test Grades " Font-Bold="True" CssClass="mainLabel"></asp:Label>
             <asp:TextBox ID="txtboxCdTestPercent" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            <asp:Label ID="lblAssign1" runat="server" Font-Bold="True" Text="% of Total Grade" CssClass="mainLabel"></asp:Label>
-            <asp:RangeValidator ID="RangeValidator3" runat="server" ControlToValidate="txtboxCdTestPercent" CssClass="valError" Display="Dynamic" ErrorMessage="RangeValidator" MaximumValue="125" MinimumValue="0" Type="Integer">Use Int representation for the percentage, do not include &quot;%&quot; symbol.</asp:RangeValidator>
+            <asp:Label ID="Label4" runat="server" Font-Bold="True" Text="% of Total Grade" CssClass="mainLabel"></asp:Label>
+            <!--dynamically added fields -->
             <br />
             <br />
-            <asp:TextBox ID="txtboxCdTest1" runat="server" CssClass="centerTxtBox"></asp:TextBox>
+            <button type="button" onclick="addAdditionalField('txtboxCdTest')">Add Additional Test Field</button>
+            <button type="button" onclick="removeLastField('txtboxCdTest')">Remove Last Test Field</button>
             <br />
-            <asp:RangeValidator ID="cdtValidator1" runat="server" ControlToValidate="txtboxCdTest1" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="txtboxCdTest1" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
+            <asp:Label ID="testListTitle" runat="server" Text="Test List" Font-Bold="True" CssClass="mainLabel"></asp:Label>
+            <ul class="modern-list">    
+                <li><div id="codeTestFieldsContainer"></div></li>
+            </ul>
             <br />
-            <br />
-            <asp:TextBox ID="txtboxCdTest2" runat="server" CssClass="centerTxtBox"></asp:TextBox>
-            <br />
-            <asp:RangeValidator ID="cdtValidator2" runat="server" ControlToValidate="txtboxCdTest2" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtboxCdTest2" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
-            <br />
-            <br />
+            <!-- Midterm Test labels -->
+            <asp:HiddenField ID="hiddenmidtestcounter" runat="server" Value="0" />
             <asp:Label ID="lblMidTerm" runat="server" Text="Mid-Term Grade " Font-Bold="True" CssClass="mainLabel"></asp:Label>
             <asp:TextBox ID="txtboxMidTestPercent" runat="server" CssClass="centerTxtBox"></asp:TextBox>
             <asp:Label ID="lblAssign2" runat="server" Font-Bold="True" Text="% of Total Grade" CssClass="mainLabel"></asp:Label>
-            <asp:RangeValidator ID="RangeValidator2" runat="server" ControlToValidate="txtboxMidTestPercent" CssClass="valError" Display="Dynamic" ErrorMessage="RangeValidator" MaximumValue="125" MinimumValue="0" Type="Integer">Use Int representation for the percentage, do not include &quot;%&quot; symbol.</asp:RangeValidator>
             <br />
             <br />
-            <asp:TextBox ID="txtboxMidTest1" runat="server" CssClass="centerTxtBox"></asp:TextBox>
+            <button type="button" onclick="addAdditionalField('txtboxMidTest')">Add Additional Mid-Term Test</button>
+            <button type="button" onclick="removeLastField('txtboxMidTest')">Remove Last Mid-Term Field</button>
             <br />
-            <asp:RangeValidator ID="midTestValidator" runat="server" ControlToValidate="txtboxMidTest1" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtboxMidTest1" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
+            <asp:Label ID="midTermListTitle" runat="server" Text="Midterm Test List" Font-Bold="True" CssClass="mainLabel"></asp:Label>
+            <ul class="modern-list">
+                <li><div id="midtermTestFieldsContainer"></div></li>
+            </ul>
             <br />
-            <br />
+            <!-- Final Test labels -->
+            <asp:HiddenField ID="hiddenfinaltestcounter" runat="server" Value="0" />
             <asp:Label ID="lblFinal" runat="server" Text="Final Exam Grade " Font-Bold="True" CssClass="mainLabel"></asp:Label>
             <asp:TextBox ID="txtboxFinalTestPercent" runat="server" CssClass="centerTxtBox"></asp:TextBox>
             <asp:Label ID="lblAssign3" runat="server" Font-Bold="True" Text="% of Total Grade" CssClass="mainLabel"></asp:Label>
-            <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="txtboxFinalTestPercent" CssClass="valError" Display="Dynamic" ErrorMessage="RangeValidator" MaximumValue="125" MinimumValue="0" Type="Integer">Use Int representation for the percentage, do not include &quot;%&quot; symbol.</asp:RangeValidator>
             <br />
             <br />
-            <asp:TextBox ID="txtboxFinalTest1" runat="server" CssClass="centerTxtBox"></asp:TextBox>
+            <button type="button" onclick="addAdditionalField('txtboxFinalTest')">Add Additional Final Test</button>
+            <button type="button" onclick="removeLastField('txtboxFinalTest')">Remove Last Final Field</button>
             <br />
-            <asp:RangeValidator ID="finalTestValidator" runat="server" ControlToValidate="txtboxFinalTest1" Display="Dynamic" ErrorMessage="Please enter a number between 0-100" MaximumValue="100" MinimumValue="0" CssClass="valError" Type="Integer"></asp:RangeValidator>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtboxFinalTest1" CssClass="valError" Display="Dynamic" ErrorMessage="All fields must contain a valid interger between 0-100. Please complete the Form."></asp:RequiredFieldValidator>
+            <asp:Label ID="finalTestListTitle" runat="server" Text="Final Test List" Font-Bold="True" CssClass="mainLabel"></asp:Label>
+            <ul class="modern-list">
+                <li><div id="finalTestFieldsContainer"></div></li>
+            </ul>
             <br />
             <br />
             <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Calculate" CssClass="centerStuff" Font-Bold="True" Height="22px" Width="128px" />
+            <br />
             <asp:Label ID="hiddenFieldCounter1" runat="server" Text="Label" Visible="False"></asp:Label>
             <asp:Label ID="hiddenFieldCounter2" runat="server" Text="Label" Visible="False"></asp:Label>
-            <br />
-            <br />
+            <asp:HiddenField ID="totalQuizSumHidden" runat="server" />
+            <asp:HiddenField ID="totalAssignmentSumHidden" runat="server" />
+            <asp:HiddenField ID="totalTestSumHidden" runat="server" />
+            <asp:HiddenField ID="totalMidTestSumHidden" runat="server" />
+            <asp:HiddenField ID="totalFinalTestSumHidden" runat="server" />
         </div>
     </form>
 </body>

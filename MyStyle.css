@@ -59,10 +59,37 @@ h1 {
 
 body {
     background-image: url('images/schoolbackgroundForLater.jpg');
-    background-size: 100% 100%;
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed; /* Fix the background image position */
     display: flex;
     justify-content: center;
     align-items: center;
-    
 }
+
+#quizFieldsContainer,
+#assignmentFieldsContainer,
+#codeTestFieldsContainer,
+#midtermTestFieldsContainer,
+#finalTestFieldsContainer {
+    display: flex;
+    flex-direction: column; /* Display children vertically */
+}
+
+.modern-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+    .modern-list li {
+        padding: 8px 15px; /* Adjusted padding */
+        border-bottom: 1px solid black; /* Light gray border */
+        transition: background-color 0.3s ease; /* Smooth background color transition */
+        border-radius: 8px; /* Rounded corners */
+    }
+
+        .modern-list li:hover {
+            background-color: #f9f9f9; /* Light gray background on hover */
+        }

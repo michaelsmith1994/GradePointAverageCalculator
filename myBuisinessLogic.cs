@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -7,13 +8,39 @@ namespace WebApplication1
 {
     public class myBuisinessLogic
     {
+        string letterGrade;
         double quizGrades, assignmentGrades, codetestGrades, midtestGrades, finaltestGrades;
+        double quizCounter, assCounter, cdTestCounter, midTestCounter, finalTestCounter;
         double quizPercentile, assignmentPercentile, codeTestPercentile, midTestPercentile, finalTestPercentile;
+
         double quizPercent, assignPercent, codetestPercent, midtestPercent, finaltestPercent;
         double percentageGrade;
-        string letterGrade;
-        
-
+        //set the counters
+        public double TotalQuizTextBoxes
+        {
+            set 
+            {
+                quizCounter = value;
+                
+            }    
+        }
+        public double TotalAssTextBoxes
+        {
+            set { assCounter = value; }
+        }
+        public double TotalCdTestTextBoxes
+        {
+            set { cdTestCounter = value; }
+        }
+        public double TotalMidTestTextBoxes
+        {
+            set { midTestCounter = value; }
+        }
+        public double TotalFinalTestTextBoxes
+        {
+            set { finalTestCounter = value; }
+        }
+        //set pecentages
         public double QuizPercentile
         {
             set
@@ -21,7 +48,6 @@ namespace WebApplication1
                 quizPercentile = value;
             }
         }
-
         public double AssignmentPercentile
         {
             set
@@ -29,7 +55,6 @@ namespace WebApplication1
                 assignmentPercentile = value;
             }
         }
-
         public double CodeTestPercentile
         {
             set
@@ -37,7 +62,6 @@ namespace WebApplication1
                 codeTestPercentile = value;
             }
         }
-
         public double MidTestPercentile
         {
             set
@@ -45,7 +69,6 @@ namespace WebApplication1
                 midTestPercentile = value;
             }
         }
-
         public double FinalTestPercentile
         {
             set
@@ -53,52 +76,124 @@ namespace WebApplication1
                 finalTestPercentile = value;
             }
         }
+        //set grade totals
+        public double QuizGrades
+        {
+            get { return quizGrades; }
+            set { quizGrades += value; }
+        }
 
-        public double QuizGrades//5% of grade
+        public double AssignmentGrades
         {
-            set
-            {
-                quizGrades += value;
-            }
+            get { return assignmentGrades; }
+            set { assignmentGrades += value; }
         }
-        public double AssignmentGrades//24% of grade
+
+        public double CodeTestGrades
         {
-            set
-            {
-                assignmentGrades += value;
-            }
+            get { return codetestGrades; }
+            set { codetestGrades += value; }
         }
-        public double CodeTestGrades//26% of grade
+
+        public double MidTestGrades
         {
-            set
-            {
-                codetestGrades += value;
-            }
-        }   
-        public double MidTestGrades//20% of grade
-        {
-            set
-            {
-                midtestGrades += value;
-            }
+            get { return midtestGrades; }
+            set { midtestGrades += value; }
         }
-        public double FinalTestGrades//25% of grade
+
+        public double FinalTestGrades
         {
-            set
-            {
-                finaltestGrades += value;
-            }
+            get { return finaltestGrades; }
+            set { finaltestGrades += value; }
+        }
+
+        // Method to update quiz grades sum
+        public void UpdateQuizGrades(double sum)
+        {
+            QuizGrades = sum;
+        }
+
+        // Method to update assignment grades sum
+        public void UpdateAssignmentGrades(double sum)
+        {
+            AssignmentGrades = sum;
+        }
+
+        // Method to update code test grades sum
+        public void UpdateCodeTestGrades(double sum)
+        {
+            CodeTestGrades = sum;
+        }
+
+        // Method to update midterm test grades sum
+        public void UpdateMidTestGrades(double sum)
+        {
+            MidTestGrades = sum;
+        }
+
+        // Method to update final test grades sum
+        public void UpdateFinalTestGrades(double sum)
+        {
+            FinalTestGrades = sum;
         }
         public double CalculateAverage()
         {
-            quizPercent = quizGrades / 500 * quizPercentile;
-            assignPercent = assignmentGrades / 400 * assignmentPercentile;
-            codetestPercent = (codetestGrades / 200) * codeTestPercentile;
-            midtestPercent = (midtestGrades / 100) * midTestPercentile;
-            finaltestPercent = (finaltestGrades / 100) * finalTestPercentile;
-            percentageGrade = quizPercent + assignPercent + codetestPercent + midtestPercent + finaltestPercent;
+            Debug.WriteLine($"quizGrades during calc average: {quizGrades}, totalQuizTextBoxes: {quizCounter}, quizPercentile: {quizPercentile}");
+            Debug.WriteLine($"assignmentGrades during calc average: {assignmentGrades}, totalAssTextBoxes: {assCounter}, assignmentPercentile: {assignmentPercentile}");
+            Debug.WriteLine($"codetestGrades during calc average: {codetestGrades}, totalCdTestTextBoxes: {cdTestCounter}, codeTestPercentile: {codeTestPercentile}");
+            Debug.WriteLine($"midtestGrades during calc average: {midtestGrades}, totalMidTestTextBoxes: {midTestCounter}, midTestPercentile: {midTestPercentile}");
+            Debug.WriteLine($"finaltestGrades during calc average: {finaltestGrades}, totalFinalTestTextBoxes: {finalTestCounter}, finalTestPercentile: {finalTestPercentile}");
+            Debug.WriteLine($"quizPercent during calc average: {quizPercent}, assignPercent: {assignPercent}, codetestPercent: {codetestPercent}, midtestPercent: {midtestPercent}, finaltestPercent: {finaltestPercent}, percentageGrade: {percentageGrade}");
+            //The following if else statements are to catch potential divide by zero error. Some may wany the variable to be zero as the dont have certain assignments.
+            if (quizCounter == 0)
+            {
+                quizPercent = 0;
+            }
+            else 
+            { 
+                quizPercent = (quizGrades / (quizCounter * 100)) * quizPercentile; 
+            }
             
-            return percentageGrade;
+            if (assCounter == 0)
+            {
+                assignPercent = 0;
+            }
+            else
+            {
+                assignPercent = (assignmentGrades / (assCounter * 100)) * assignmentPercentile;
+            }
+
+            if (cdTestCounter == 0)
+            {
+                codetestPercent = 0;
+            }
+            else
+            {
+                codetestPercent = (codetestGrades / (cdTestCounter * 100)) * codeTestPercentile;
+            }
+
+            if (midTestCounter == 0)
+            {
+                midtestPercent = 0;
+            }
+            else
+            {
+                midtestPercent = (midtestGrades / (midTestCounter * 100)) * midTestPercentile;
+            }
+
+            if (finalTestCounter == 0)
+            {
+                finaltestPercent = 0;
+            }
+            else
+            {
+                finaltestPercent = (finaltestGrades / (finalTestCounter * 100)) * finalTestPercentile;
+            }
+
+            percentageGrade = quizPercent + assignPercent + codetestPercent + midtestPercent + finaltestPercent;
+            double formatpercentageGrade = Math.Floor(percentageGrade * 100) / 100;
+            
+            return formatpercentageGrade;
         }
         public String ConvertToLetterGrade(double percentageGrade)
         {
