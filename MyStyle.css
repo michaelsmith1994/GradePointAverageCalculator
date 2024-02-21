@@ -51,10 +51,10 @@ h1 {
     text-align: center;
     background: rgba(204, 255, 204, .8);
     border-radius: 10px;
-    min-height: 100vh; /* Set the minimum height to 100% of the viewport height */
-    display: block; /* Use flexbox to align content vertically */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
+    min-height: 100vh;
+    display: block; 
+    justify-content: center; 
+    align-items: center; 
 }
 
 body {
